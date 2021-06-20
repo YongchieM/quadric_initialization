@@ -18,9 +18,11 @@
 
 #include <g2o/types/slam3d/se3quat.h>
 
+// some helper functions
+
 namespace LfD
 {
-    
+//load data with delimeter ","
 void load_data_py(const char* filename,eigMatrix& data)
 {
     std::ifstream fin(filename);
@@ -53,6 +55,7 @@ void load_data_py(const char* filename,eigMatrix& data)
     fin.close();
 }
 
+//load data in txt, write into matrix
 void load_data(const char* filename, eigMatrix& data)
 {
     std::ifstream fin(filename);
@@ -102,7 +105,6 @@ void load_data(const char* filename, eigMatrix& data)
 }
 
 
-
 void load_intrinsics(const char* filename, Eigen::Matrix3d& K)
 {
     std::ifstream fin(filename);
@@ -132,7 +134,7 @@ void load_intrinsics(const char* filename, Eigen::Matrix3d& K)
     fin.close();
 }
 
-
+//load ground truth of ellipsoids, each element in a vector is a 4x4 ellipsoid matrix
 void load_gt(const char* filename, Eigen::Matrix<Eigen::Matrix4d,Eigen::Dynamic,1>& gt)
 {
     std::ifstream fin(filename);
@@ -220,7 +222,7 @@ void plot_ellipse(const char* filename,eigMatrix& Cs,eigMatrix& estCs,eigMatrix&
     
 }
 
-
+//write bounding boxes in an image to a vector
 Eigen::VectorXf rectToEig(std::vector<std::pair<std::string,cv::Rect>>& bbs)
 {
     Eigen::VectorXf bbs_vec;
@@ -233,11 +235,10 @@ Eigen::VectorXf rectToEig(std::vector<std::pair<std::string,cv::Rect>>& bbs)
     }
     
     return bbs_vec;
-    
 }
 
 
-
+//convert camera pose x y z qx qy qz qw to matrix
 void convertPose(Eigen::MatrixXd& in, Eigen::MatrixXd& out)
 {
     int rows = in.rows();
@@ -275,6 +276,7 @@ Eigen::Matrix3Xd generateProjectionMatrix(Eigen::MatrixXd& campose_t, Eigen::Mat
     return proj_mat;
 }
 
+//generate 4 lines for each bounding box
 Eigen::MatrixXd fromDetectionsToLines(Eigen::VectorXd &detections)
 {
     double x1 = detections(0);
@@ -297,7 +299,7 @@ Eigen::MatrixXd fromDetectionsToLines(Eigen::VectorXd &detections)
     
     return lines;
 }
-
+//unproject the lines to planes
 Eigen::MatrixXd getPlanesHomo(Eigen::MatrixXd& pose_mat, Eigen::MatrixXd& detection_mat, Eigen::Matrix3d& K)
 {
     //std::assert(pose_mat.rows()/4==detection_mat.rows() && "Two matrics should match.");
@@ -330,7 +332,7 @@ Eigen::MatrixXd getPlanesHomo(Eigen::MatrixXd& pose_mat, Eigen::MatrixXd& detect
 }
 
 
-
+//get vectors from planes for calculating Q*
 Eigen::MatrixXd getVectorFromPlanesHomo(Eigen::MatrixXd& planes)
 {
     int cols = planes.cols();
@@ -351,7 +353,7 @@ Eigen::MatrixXd getVectorFromPlanesHomo(Eigen::MatrixXd& planes)
     return planes_vector;
 }
 
-
+//compute Q*
 Eigen::Matrix4d getQStarFromVectors(Eigen::MatrixXd& planeVecs)
 {
     Eigen::MatrixXd A = planeVecs.transpose();
@@ -372,7 +374,7 @@ Eigen::Matrix4d getQStarFromVectors(Eigen::MatrixXd& planeVecs)
 }
     
     
-
+//compute Q* from bounding boxes
 Eigen::Matrix4d getQStarFromBboxes(Eigen::MatrixXd& pose_mat,Eigen::MatrixXd& detection_mat,Eigen::Matrix3d& K)
 {
     Eigen::MatrixXd planesHomo = getPlanesHomo(pose_mat,detection_mat,K);
