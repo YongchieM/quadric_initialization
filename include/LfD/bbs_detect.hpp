@@ -8,6 +8,8 @@
 #include <string>
 #include <opencv2/opencv.hpp>
 
+// this file is used for bounding box detection with yolov3
+
 using namespace std;
 
 namespace LfD
@@ -24,7 +26,7 @@ void load_net();
 
 void postprocess(cv::Mat& frame,const vector<cv::Mat>& out, vector<pair<string,cv::Rect>>& bbs);
 
-void drawPred(int classId,float conf,int left,int top,int right,int bottom,cv::Mat& frame);
+void drawPred(int classId,float conf,int left,int top,int right,int bottom,cv::Mat& frame); // draw bounding boxes on image
 
 vector<cv::String> getOutputNames(const cv::dnn::Net& net);
 
