@@ -24,7 +24,7 @@ void show_ellipsoid(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud, Eigen::Matrix
 //convert Eigen::Matrix to OpenGlMatrix
 void rtToOpenGTMatrix(Eigen::Matrix4d& T, pangolin::OpenGlMatrix& M);
 
-
+//evaluate the error of ellipsoid estimation, compute the difference between ellipsoid centre and point position of bounding box centre, it's not accurate
 Eigen::VectorXd evaluate_estimate(cv::Mat& depth, Eigen::VectorXd& bbs, double factor, Eigen::Matrix3d K, Eigen::MatrixXd& ellipsoids, Eigen::MatrixXd& campose);
 
 
