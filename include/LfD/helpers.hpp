@@ -256,7 +256,8 @@ void convertPose(Eigen::MatrixXd& in, Eigen::MatrixXd& out)
     }
 }
 
-
+/*****************************************************************/
+//the following functions is for ellipsoid estimation based on planes
 
 Eigen::Matrix3Xd generateProjectionMatrix(Eigen::MatrixXd& campose_t, Eigen::Matrix3d& K)
 {
