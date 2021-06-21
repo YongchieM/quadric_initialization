@@ -7,6 +7,8 @@
 #include <eigen3/Eigen/Dense>
 #include <eigen3/Eigen/SVD>
 
+// this file includes some functions for ellipsoid estimation based on ellipse estimation
+
 namespace LfD
 {
 
